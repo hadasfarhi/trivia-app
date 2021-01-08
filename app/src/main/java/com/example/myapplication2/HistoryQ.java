@@ -43,6 +43,7 @@ public class HistoryQ extends AppCompatActivity {
     private String gooda;
     private int numQ =0;
     private int tempQ;
+    private int extraPoint=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,8 +110,8 @@ public class HistoryQ extends AppCompatActivity {
                     public void onClick(View v) {
                         if (slist.get(0) == gooda)
                         {
-                            point++;
-                            Toast.makeText(HistoryQ.this , "point " + point, Toast.LENGTH_SHORT).show();
+                            point=extraPoint+point;
+                            Toast.makeText(HistoryQ.this , "point " + extraPoint, Toast.LENGTH_SHORT).show();
                         }
 
                         alist.remove(0);
@@ -144,8 +145,8 @@ public class HistoryQ extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if (slist.get(1) == gooda) {
-                            point++;
-                            Toast.makeText(HistoryQ.this , "point " + point, Toast.LENGTH_SHORT).show();
+                            point=extraPoint+point;
+                            Toast.makeText(HistoryQ.this , "point " + extraPoint, Toast.LENGTH_SHORT).show();
                         }
 
                         alist.remove(0);
@@ -177,8 +178,8 @@ public class HistoryQ extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if (slist.get(2) == gooda) {
-                            point++;
-                            Toast.makeText(HistoryQ.this , "point " + point, Toast.LENGTH_SHORT).show();
+                            point=extraPoint+point;
+                            Toast.makeText(HistoryQ.this , "point " + extraPoint, Toast.LENGTH_SHORT).show();
                         }
 
                         alist.remove(0);
@@ -210,8 +211,8 @@ public class HistoryQ extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if (slist.get(3) == gooda) {
-                            point++;
-                            Toast.makeText(HistoryQ.this , "point " + point, Toast.LENGTH_SHORT).show();
+                            point=extraPoint+point;
+                            Toast.makeText(HistoryQ.this , "point " + extraPoint, Toast.LENGTH_SHORT).show();
                         }
 
                         alist.remove(0);
@@ -256,6 +257,7 @@ public class HistoryQ extends AppCompatActivity {
                         , TimeUnit.MILLISECONDS.toMinutes(l)
                         , TimeUnit.MILLISECONDS.toSeconds(l) -
                                 TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(l)));
+                extraPoint = (int) (TimeUnit.MILLISECONDS.toSeconds(l) -TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(l)));
                 timerView.setText(sduration);
 
                 if (tempQ>numQ)
