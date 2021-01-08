@@ -43,6 +43,7 @@ public class AnimalsQ extends AppCompatActivity {
     private String gooda;           // Holds the correct answer to the question which appears
     private int numQ =0;        // for the Timer
     private int tempQ;          // for the Timer
+    private int extraPoint=0;   //point per timer
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,13 +110,12 @@ public class AnimalsQ extends AppCompatActivity {
                     public void onClick(View v) {
                         if (slist.get(0) == gooda)      //Check if the answer is correct
                         {
-                            point++;                    //get points
-                            Toast.makeText(AnimalsQ.this , "point " + point, Toast.LENGTH_SHORT).show();    //show it on the bottom of the screen
+                            point=extraPoint+point;                    //get points
+                            Toast.makeText(AnimalsQ.this , "point " + extraPoint, Toast.LENGTH_SHORT).show();    //show it on the bottom of the screen
                         }
 
                         alist.remove(0);        //Remove the question
                         numQ--;                         // To update the timer that a question pass
-
                         if (alist.isEmpty())        //Checks if the questions are over in the round
                         {
                             getPoint(point);              // update the point that are earned in the round
@@ -144,8 +144,8 @@ public class AnimalsQ extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if (slist.get(1) == gooda) {
-                            point++;
-                            Toast.makeText(AnimalsQ.this , "point " + point, Toast.LENGTH_SHORT).show();
+                            point=extraPoint+point;
+                            Toast.makeText(AnimalsQ.this , "point " + extraPoint, Toast.LENGTH_SHORT).show();
                         }
 
                         alist.remove(0);
@@ -177,8 +177,8 @@ public class AnimalsQ extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if (slist.get(2) == gooda) {
-                            point++;
-                            Toast.makeText(AnimalsQ.this , "point " + point, Toast.LENGTH_SHORT).show();
+                            point=extraPoint+point;
+                            Toast.makeText(AnimalsQ.this , "point " + extraPoint, Toast.LENGTH_SHORT).show();
                         }
 
                         alist.remove(0);
@@ -210,8 +210,8 @@ public class AnimalsQ extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if (slist.get(3) == gooda) {
-                            point++;
-                            Toast.makeText(AnimalsQ.this , "point " + point, Toast.LENGTH_SHORT).show();
+                            point=extraPoint+point;
+                            Toast.makeText(AnimalsQ.this , "extraPoint " + point, Toast.LENGTH_SHORT).show();
                         }
 
                         alist.remove(0);
@@ -256,6 +256,7 @@ public class AnimalsQ extends AppCompatActivity {
                         , TimeUnit.MILLISECONDS.toMinutes(l)
                         , TimeUnit.MILLISECONDS.toSeconds(l) -
                                 TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(l)));
+                extraPoint = (int) (TimeUnit.MILLISECONDS.toSeconds(l) -TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(l)));
                 timerView.setText(sduration);                                                       //show it on the screen
 
                 if (tempQ>numQ)                 // If a question has passed, without the timer update the amount of questions
