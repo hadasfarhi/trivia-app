@@ -211,7 +211,7 @@ public class AnimalsQ extends AppCompatActivity {
                     public void onClick(View v) {
                         if (slist.get(3) == gooda) {
                             point=extraPoint+point;
-                            Toast.makeText(AnimalsQ.this , "extraPoint " + point, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AnimalsQ.this , "Point " + extraPoint, Toast.LENGTH_SHORT).show();
                         }
 
                         alist.remove(0);
@@ -379,17 +379,34 @@ public class AnimalsQ extends AppCompatActivity {
 
                 FirebaseAuth auth = FirebaseAuth.getInstance();                      // Connects to the database
                 String id = auth.getUid();                                      // get the user id from the database
-
+                String allstring="";
+                int x=0;
+                String pont="";
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
                     if (snapshot.getRef().getKey().equals(auth.getUid()))           //find the user in the database
                     {
-                        int pointi = Integer.parseInt(snapshot.getValue().toString());      //the data in the database is a string , set it to int
-                        pointi=pointi+newpoint;                                               // update the point that are earned in the round
-                        HashMap<String , Object> map = new HashMap<>();                         //the database work with HashMap
-                        map.put( auth.getUid(), pointi);
-                        FirebaseDatabase.getInstance().getReference().child("UserData").updateChildren(map);    // update the database
-                        break;
+
+                        if (snapshot.getRef().getKey().equals(auth.getUid()))       // when the user is fond get the data is ponts
+                        {
+                            for (int i=0; i<snapshot.getValue().toString().length()-1 ; i++)
+                            {
+                                if(snapshot.getValue().toString().charAt(i)==':')                  //because in the DataBase the data  Stored as follows username : point
+                                {
+                                    x=i;                                                            // find the " : " so we can get the point
+                                }
+                            }
+
+                            pont = snapshot.getValue().toString().substring(x+1);               // get only the poiny
+                            int pointi = Integer.parseInt(pont);      //the data in the database is a string , set it to int
+                            pointi=pointi+newpoint;                                               // update the point that are earned in the round
+                            String theusername= snapshot.getValue().toString().substring(0,x+1);    //Temporarily store the username
+                            allstring=theusername+pointi;                                              // sote the username and the update points
+                            HashMap<String , Object> map = new HashMap<>();                         //the database work with HashMap
+                            map.put( auth.getUid(), allstring);
+                            FirebaseDatabase.getInstance().getReference().child("UserData").updateChildren(map);    // update the database
+                            break;
+                        }
                     }
                 }
             }

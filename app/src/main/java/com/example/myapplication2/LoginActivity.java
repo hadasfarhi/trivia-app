@@ -56,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (task.isSuccessful())
                 {
                     Toast.makeText(LoginActivity.this , "login successfull" , Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(LoginActivity.this, Questionsmenu.class));                    //If a connection is established, go to the categories window
+                    startActivity(new Intent(LoginActivity.this, GameType.class));                    //If a connection is established, go to the categories window
                     finish();
                 }
                 else

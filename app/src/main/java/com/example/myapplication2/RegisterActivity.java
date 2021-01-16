@@ -24,6 +24,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText email;
     private EditText password;
     private EditText repassword;
+    private EditText username;
     private Button register;
 
     private FirebaseAuth auth;
@@ -42,6 +43,7 @@ public class RegisterActivity extends AppCompatActivity {
         password = findViewById(R.id.password);
         repassword = findViewById(R.id.repassword);
         register = findViewById(R.id.register);
+        username = findViewById(R.id.username);
 
         auth = FirebaseAuth.getInstance();
 
@@ -51,6 +53,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String txt_email = email.getText().toString();
                 String txt_password = password.getText().toString();
                 String txt_repassword = repassword.getText().toString();
+                String txt_username = username.getText().toString();
 
                 // ----------------------check password and mail
 
@@ -68,8 +71,6 @@ public class RegisterActivity extends AppCompatActivity {
                     }
 
                 }
-
-
 
                 if (TextUtils.isEmpty(txt_email) || TextUtils.isEmpty(txt_password))            //If one of the fields is empty
                 {
@@ -95,7 +96,7 @@ public class RegisterActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    registerUser(txt_email, txt_password);
+                    registerUser(txt_email, txt_password,txt_username);
                 }
             }
         });
@@ -103,7 +104,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
 
-    private void registerUser(String email, String password)
+    private void registerUser(String email, String password,String username)
     {
         auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(RegisterActivity.this , new OnCompleteListener<AuthResult>() {
             @Override
@@ -113,10 +114,10 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(RegisterActivity.this, "successfull", Toast.LENGTH_SHORT).show();
 
                     HashMap<String , Object> map = new HashMap<>();             // add user to the userdatabase for saving the points
-                    map.put( auth.getUid(), 0);
+                    map.put( auth.getUid(),username+":"+ 0);                        //The username does not have to be unique
                     FirebaseDatabase.getInstance().getReference().child("UserData").updateChildren(map);
 
-                    startActivity(new Intent(RegisterActivity.this , Questionsmenu.class));
+                    startActivity(new Intent(RegisterActivity.this , GameType.class));
                     finish();
                 }
                 else

@@ -40,6 +40,7 @@ public class EndSession extends AppCompatActivity {
             public void run() {
 
                 DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("UserData");       // Connects to the database - in the userData
+
                 reference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -51,7 +52,19 @@ public class EndSession extends AppCompatActivity {
 
                             if (snapshot.getRef().getKey().equals(auth.getUid()))       // when the user is fond show is ponts
                             {
-                                String pont = snapshot.getValue().toString();
+                                String temp="";
+                                int x=0;
+
+                                for (int i=0; i<snapshot.getValue().toString().length()-1 ; i++)
+                                {
+                                    if(snapshot.getValue().toString().charAt(i)==':')                  //to - Check if the email has at least one character before the @
+                                    {
+                                        x=i;
+                                    }
+
+                                }
+
+                                String pont = snapshot.getValue().toString().substring(x+1,snapshot.getValue().toString().length());
                                 viewPoint.setText(pont);
                                 break;
                             }

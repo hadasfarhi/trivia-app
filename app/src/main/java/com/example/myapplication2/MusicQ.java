@@ -366,28 +366,41 @@ public class MusicQ extends AppCompatActivity {
 
     private void getPoint (int newpoint)
     {
-
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("UserData");
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-
                 FirebaseAuth auth = FirebaseAuth.getInstance();
                 String id = auth.getUid();
-
+                String allstring="";
+                int x=0;
+                String pont="";
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
                     if (snapshot.getRef().getKey().equals(auth.getUid()))
                     {
 
+                        if (snapshot.getRef().getKey().equals(auth.getUid()))
+                        {
+                            for (int i=0; i<snapshot.getValue().toString().length()-1 ; i++)
+                            {
+                                if(snapshot.getValue().toString().charAt(i)==':')
+                                {
+                                    x=i;
+                                }
+                            }
 
-                        int pointi = Integer.parseInt(snapshot.getValue().toString());
-                        pointi=pointi+newpoint;
-                        HashMap<String , Object> map = new HashMap<>();
-                        map.put( auth.getUid(), pointi);
-                        FirebaseDatabase.getInstance().getReference().child("UserData").updateChildren(map);
-                        break;
+                            pont = snapshot.getValue().toString().substring(x+1);
+                            int pointi = Integer.parseInt(pont);
+                            pointi=pointi+newpoint;
+                            String theusername= snapshot.getValue().toString().substring(0,x+1);
+                            allstring=theusername+pointi;
+                            HashMap<String , Object> map = new HashMap<>();
+                            map.put( auth.getUid(), allstring);
+                            FirebaseDatabase.getInstance().getReference().child("UserData").updateChildren(map);
+                            break;
+                        }
                     }
                 }
             }
@@ -397,6 +410,5 @@ public class MusicQ extends AppCompatActivity {
 
             }
         });
-
     }
 }

@@ -21,6 +21,7 @@ public class Questionsmenu extends AppCompatActivity {
         setContentView(R.layout.activity_questionsmenu);
 
         getSupportActionBar().setTitle("Choose your category");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         bAnimals = findViewById(R.id.Animals);
         bGeography = findViewById(R.id.Geography);
