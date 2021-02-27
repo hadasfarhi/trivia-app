@@ -14,6 +14,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -55,9 +60,43 @@ public class LoginActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful())
                 {
-                    Toast.makeText(LoginActivity.this , "login successfull" , Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(LoginActivity.this, GameType.class));                    //If a connection is established, go to the categories window
-                    finish();
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("admins");    //look up if the user is admin - from the admin database
+                    reference.addListenerForSingleValueEvent(new ValueEventListener() {
+
+                        FirebaseAuth auth = FirebaseAuth.getInstance();
+                        boolean isAdmin=false;
+
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {              //Check is the uid of the user is in the admin database
+                                if (snapshot.getRef().getKey().equals(auth.getUid()))
+                                {
+                                    isAdmin=true;
+                                    break;
+                                }
+                            }
+
+                            if (isAdmin==true)
+                            {
+                                Toast.makeText(LoginActivity.this , "login successfull" , Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(LoginActivity.this, adminlogin.class));                    //If a connection is established, go to the admin  window
+                                finish();
+                            }
+                            else
+                            {
+                                Toast.makeText(LoginActivity.this , "login successfull" , Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(LoginActivity.this, GameType.class));                    //If a connection is established, go to the categories window
+                                finish();
+                            }
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
+
                 }
                 else
                 {
